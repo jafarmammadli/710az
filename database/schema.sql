@@ -158,6 +158,8 @@ insert into makes (name) values
   ('Geely'),
   ('Peugeot'),
   ('Renault'),
+  ('Suzuki'),
+  ('Mazda'),
   ('Skoda');
 
 -- ============================================
