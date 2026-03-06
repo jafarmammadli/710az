@@ -1,8 +1,8 @@
 # 710.az — Project Progress Tracker
 
-> **Last Updated:** 2026-03-05
+> **Last Updated:** 2026-03-05 (codebase analysis)
 > **Repo:** https://github.com/jafarmammadli/710az
-> **Status:** 🟡 Phase 0 — Setup & Planning
+> **Status:** 🟢 Phase 1 — E-Commerce Website (in progress)
 
 ---
 
@@ -19,15 +19,15 @@ An automotive e-commerce platform for Azerbaijan — selling car oils, fluids, f
 
 | Layer | Tool | Status |
 |---|---|---|
-| Framework | Next.js 14 (App Router) | ⬜ Not started |
+| Framework | Next.js 16 (App Router) | ✅ In use |
 | Hosting | Vercel | ⬜ Not started |
-| Database | Supabase (PostgreSQL) | ⬜ Not started |
+| Database | Supabase (PostgreSQL) | ✅ Client + schema in repo |
 | Auth | Supabase Auth | ⬜ Not started |
 | Payments | Stripe | ⬜ Not started |
 | Search | Meilisearch (self-hosted) | ⬜ Not started |
 | CMS/Admin | Payload CMS | ⬜ Not started |
 | Email | Resend | ⬜ Not started |
-| Styling | Tailwind CSS | ⬜ Not started |
+| Styling | Tailwind CSS | ✅ Configured (v4) |
 | Dev Environment | Cursor + Claude Code | ✅ Ready |
 | Version Control | GitHub (public for now) | ✅ Repo created |
 
@@ -36,8 +36,8 @@ An automotive e-commerce platform for Azerbaijan — selling car oils, fluids, f
 ## 🔢 Phase Breakdown
 
 ```
-Phase 0 → Setup & Planning         ← YOU ARE HERE
-Phase 1 → E-Commerce Website
+Phase 0 → Setup & Planning         ✅ Complete
+Phase 1 → E-Commerce Website       ← YOU ARE HERE
 Phase 2 → Physical Store Integration (O2O)
 Phase 3 → Scale & Optimize
 ```
@@ -59,7 +59,7 @@ Phase 3 → Scale & Optimize
 - [x] README.md written (basic project description)
 - [x] `.gitignore` configured properly for Next.js
 - [x] Branch strategy decided (main = production, dev = development)
-- [ ] Cursor set up locally and connected to repo
+- [x] Cursor set up locally and connected to repo
 
 ### 0.3 Accounts & Services (Create these, they're all free)
 - [ ] Vercel account created → vercel.com
@@ -73,52 +73,52 @@ Phase 3 → Scale & Optimize
 ## 🛒 PHASE 1 — E-Commerce Website
 
 ### 1.1 Project Initialization
-- [ ] Next.js 14 project bootstrapped (`npx create-next-app@latest`)
-- [ ] Tailwind CSS configured
-- [ ] Folder structure finalized (see structure below)
-- [ ] Environment variables file (`.env.local`) set up
+- [x] Next.js project bootstrapped (Next.js 16, App Router)
+- [x] Tailwind CSS configured (v4, PostCSS)
+- [x] Folder structure in place (`app/`, `components/`, `lib/`, `types/`, `database/`)
+- [x] Environment variables file (`.env.local`) set up (Supabase URL + anon key referenced in `lib/supabase.ts`)
 - [ ] Pushed to GitHub successfully
 - [ ] Vercel connected to GitHub repo (auto-deploy on push)
 - [ ] First live deployment on Vercel
 
 ### 1.2 Database Design (Supabase)
-- [ ] Supabase project created
-- [ ] Schema designed for:
-  - [ ] `products` table (id, name, brand, price, stock, images, specs)
-  - [ ] `categories` table (oils, filters, fluids, accessories)
-  - [ ] `makes` table (car brands: Toyota, Hyundai, BMW...)
-  - [ ] `models` table (Corolla, Elantra, 3-Series...)
-  - [ ] `years` table
-  - [ ] `ymm_fitment` table → links products to make/model/year combos
-  - [ ] `users` table (extends Supabase auth)
-  - [ ] `orders` table
-  - [ ] `order_items` table
-  - [ ] `garage` table (user's saved vehicles)
-  - [ ] `reviews` table
-- [ ] Row Level Security (RLS) policies set up
-- [ ] Test data seeded (at least 20 products)
+- [x] Supabase project created (client in use in app)
+- [x] Schema designed for:
+  - [x] `products` table (id, name, brand, price, stock, images, category_id, viscosity, etc.) — in `database/schema.sql`
+  - [x] `categories` table (oils, filters, fluids, accessories, etc.)
+  - [x] `makes` table (car brands: Toyota, Hyundai, BMW...)
+  - [x] `models` table (Corolla, Elantra, 3-Series...)
+  - [x] `years` table
+  - [x] `ymm_fitment` table → links products to make/model/year combos
+  - [x] `profiles` table (extends Supabase auth)
+  - [x] `orders` table
+  - [x] `order_items` table
+  - [x] `garage` table (user's saved vehicles)
+  - [x] `reviews` table
+- [x] Row Level Security (RLS) policies set up (in schema.sql)
+- [ ] Test data seeded (at least 20 products) — categories + makes seeded; products seed not in repo
 
 ### 1.3 Core Pages (Frontend)
-- [ ] **Homepage** — Hero with YMM search widget, featured products, brands
-- [ ] **Category Page** — Grid of products filtered by category
-- [ ] **Product Detail Page (PDP)** — Images, specs, fitment check, add to cart
+- [x] **Homepage** — Hero with YMM search widget (`app/page.tsx`; no featured products or brands section yet)
+- [x] **Category Page** — Grid of products filtered by category (`/products` + `?category=`, `ProductsClient` filter)
+- [ ] **Product Detail Page (PDP)** — Not implemented (product cards link to `/products/[slug]` but route missing)
 - [ ] **Search Results Page** — Powered by Meilisearch
-- [ ] **Cart Page** — Items, quantities, subtotal
+- [ ] **Cart Page** — Nav/Footer link to `/cart` but no page yet
 - [ ] **Checkout Page** — Stripe payment form
 - [ ] **Order Confirmation Page**
-- [ ] **User Account Page** — Order history, saved vehicles (My Garage)
+- [ ] **User Account Page** — Nav link to `/account` but no page yet
 - [ ] **Login / Register Page**
 - [ ] **404 Page**
 - [ ] **About Page** — Brand story, the 710/OIL joke explained
 
 ### 1.4 Key Feature: YMM (Year-Make-Model) System
 > ⚠️ This is the most critical feature. Without it, this is just a generic shop.
-- [ ] YMM selector widget built (dropdowns: Year → Make → Model)
+- [x] YMM selector widget built (dropdowns: Year → Make → Model) — `components/ymm/YMMSelector.tsx`, loads makes/models/years from Supabase, redirects to `/products?make=&model=&year=`
 - [ ] VIN lookup integrated (optional, stretch goal)
 - [ ] "Fits Your Car" badge on product cards
-- [ ] Site filters dynamically to only show compatible products
+- [ ] Site filters dynamically to only show compatible products (YMM query params not yet used to filter products)
 - [ ] User can save their vehicle to "My Garage"
-- [ ] Azerbaijani vehicle data sourced and imported (top 50+ imported models)
+- [x] Azerbaijani vehicle data — 20 makes seeded in schema (Toyota, Hyundai, Kia, BMW, Lada, BYD, Haval, etc.); models table empty, to be populated
 
 ### 1.5 Search (Meilisearch)
 - [ ] Meilisearch instance set up (Railway.app free tier recommended for hosting)
@@ -144,20 +144,20 @@ Phase 3 → Scale & Optimize
 - [ ] Product bulk import (CSV) — for loading 100s of products fast
 
 ### 1.8 UI/UX
-- [ ] Mobile-first responsive design (most Azerbaijani users = mobile)
-- [ ] Logo designed (710 / OIL ambigram concept)
-- [ ] Color palette decided (recommend: dark/black + orange — aggressive auto brand feel)
-- [ ] Fonts selected
+- [x] Mobile-first responsive design — Navbar with hamburger and mobile menu; responsive product grid
+- [ ] Logo designed (710 / OIL ambigram concept) — currently text "710.az" with orange dot
+- [x] Color palette decided — dark (gray-950) + orange (orange-500) in use
+- [x] Fonts selected — Geist (next/font) in layout
 - [ ] Page load speed tested (target: under 2 seconds on mobile)
-- [ ] Favicon added
+- [x] Favicon added — `app/favicon.ico`
 
 ### 1.9 SEO (Critical for organic traffic)
-- [ ] Meta titles and descriptions on all pages
+- [x] Meta titles and descriptions on all pages — root layout has title + description
 - [ ] Structured data (schema.org/Product) on PDPs
 - [ ] Sitemap.xml generated and submitted to Google
 - [ ] robots.txt configured
 - [ ] OG images for social sharing
-- [ ] Azerbaijani language set (`lang="az"`)
+- [x] Azerbaijani language set (`lang="az"`) — in root layout
 
 ### 1.10 Phase 1 Launch Checklist
 - [ ] All core pages working
